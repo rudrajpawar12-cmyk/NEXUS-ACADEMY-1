@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Academy | Login & Registration</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0070f3;
+      --primary-dark: #0051af;
+      --bg-gradient: linear-gradient(135deg, #0070f3, #4f46e5, #3b82f6, #0ea5e9);
+      --white: #ffffff;
+      --text-main: #1e293b;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-gradient);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* LOGO */
+    .nexus-logo {
+      color: var(--white);
+      font-size: 32px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+      letter-spacing: -1px;
+    }
+
+    .nexus-logo i { margin-right: 12px; font-size: 36px; }
+
+    /* MAIN CONTAINER */
+    .container {
+      background-color: var(--white);
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      position: relative;
+      overflow: hidden;
+      width: 800px;
+      max-width: 95%;
+      min-height: 520px;
+    }
+
+    .form-container {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      transition: all 0.6s ease-in-out;
+    }
+
+    .sign-in-container { left: 0; width: 50%; z-index: 2; }
+    .sign-up-container { left: 0; width: 50%; opacity: 0; z-index: 1; }
+
+    .container.right-panel-active .sign-in-container { transform: translateX(100%); }
+    .container.right-panel-active .sign-up-container {
+      transform: translateX(100%);
+      opacity: 1;
+      z-index: 5;
+      animation: show 0.6s;
+    }
+
+    @keyframes show {
+      0%, 49.99% { opacity: 0; z-index: 1; }
+      50%, 100% { opacity: 1; z-index: 5; }
+    }
+
+    /* FORM STYLING */
+    form {
+      background-color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0 40px;
+      height: 100%;
+      text-align: center;
+    }
+
+    h1 { margin-bottom: 10px; color: var(--text-main); font-weight: 700; }
+    p { font-size: 14px; color: var(--text-light); margin-bottom: 20px; line-height: 1.5; }
+
+    .input-group { width: 100%; text-align: left; margin-bottom: 15px; }
+    .input-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px; color: var(--text-main); }
+
+    input {
+      background-color: #f1f5f9;
+      border: 1px solid var(--border);
+      padding: 12px 15px;
+      width: 100%;
+      border-radius: 10px;
+      font-family: inherit;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus { border-color: var(--primary); background: var(--white); box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1); }
+
+    button {
+      border-radius: 12px;
+      background-color: var(--primary);
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 14px 45px;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    button:hover { background: var(--primary-dark); transform: translateY(-2px); }
+    button:active { transform: scale(0.98); }
+
+    button.ghost {
+      background-color: transparent;
+      border: 2px solid var(--white);
+      width: auto;
+      margin-top: 20px;
+    }
+
+    /* OVERLAY */
+    .overlay-container {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      transition: transform 0.6s ease-in-out;
+      z-index: 100;
+    }
+
+    .container.right-panel-active .overlay-container { transform: translateX(-100%); }
+
+    .overlay {
+      background: var(--primary);
+      background: linear-gradient(to right, #4f46e5, #0070f3);
+      color: var(--white);
+      position: relative;
+      left: -100%;
+      height: 100%;
+      width: 200%;
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .container.right-panel-active .overlay { transform: translateX(50%); }
+
+    .overlay-panel {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0 40px;
+      text-align: center;
+      top: 0;
+      height: 100%;
+      width: 50%;
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .overlay-left { transform: translateX(-20%); }
+    .overlay-right { right: 0; transform: translateX(0); }
+
+    .container.right-panel-active .overlay-left { transform: translateX(0); }
+    .container.right-panel-active .overlay-right { transform: translateX(20%); }
+
+    /* FOOTER */
+    .footer {
+      margin-top: 25px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 13px;
+    }
+
+    @media (max-width: 768px) {
+      .container { width: 100%; border-radius: 0; min-height: 100vh; }
+      .overlay-container { display: none; }
+      .form-container { width: 100%; }
+      .sign-up-container, .sign-in-container { width: 100%; }
+      .container.right-panel-active .sign-up-container { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nexus-logo">
+    <i class="fa-solid fa-graduation-cap"></i> NEXUS ACADEMY
+  </div>
+
+  <div class="container" id="container">
+    <div class="form-container sign-up-container">
+      <form id="signup-form">
+        <h1>Create Account</h1>
+        <p>Join Nexus Academy and start studying today.</p>
+        <div class="input-group">
+          <label>Full Name</label>
+          <input type="text" id="signupName" placeholder="John Doe" required />
+        </div>
+        <div class="input-group">
+          <label>Email Address</label>
+          <input type="email" id="signupEmail" placeholder="student@example.com" required />
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="signupPassword" placeholder="••••••••" required />
+        </div>
+        <button type="submit">Create Account</button>
+      </form>
+    </div>
+
+    <div class="form-container sign-in-container">
+      <form id="login-form">
+        <h1>Welcome Back</h1>
+        <p>Enter your details to continue your learning journey.</p>
+        <div class="input-group">
+          <label>Email Address</label>
+          <input type="email" id="loginEmail" placeholder="student@example.com" required />
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required />
+        </div>
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
+
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Already a Student?</h1>
+          <p>Log in to access your courses, grades, and assignments.</p>
+          <button class="ghost" id="signIn">Login Now</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Hello, Future Scholar!</h1>
+          <p>Register today to unlock premium learning resources.</p>
+          <button class="ghost" id="signUp">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2026 Nexus Academy | Empowering Minds Worldwide</p>
+  </div>
+
+  <script>
+    const container = document.getElementById('container');
+    const signUpButton = document.getElementById('signUp');
+    const signInButton = document.getElementById('signIn');
+    
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+
+    // Panel Switching logic
+    signUpButton.addEventListener('click', () => container.classList.add("right-panel-active"));
+    signInButton.addEventListener('click', () => container.classList.remove("right-panel-active"));
+
+    // Handling Signup (Redirecting to Role Selection)
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nameValue = document.getElementById('signupName').value;
+      localStorage.setItem('nexusUser', nameValue || "New Member");
+      
+      // Changed to Role Selection
+      window.location.href = "RoleSelect.html";
+    });
+
+    // Handling Login (Redirecting to Role Selection)
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const emailValue = document.getElementById('loginEmail').value;
+      
+      // Use name from email if no name field is present in login
+      const nameFromEmail = emailValue ? emailValue.split('@')[0] : "User";
+      localStorage.setItem('nexusUser', nameFromEmail);
+      
+      // Changed to Role Selection
+      window.location.href = "RoleSelect.html";
+    });
+  </script>
+</body>
+</html>

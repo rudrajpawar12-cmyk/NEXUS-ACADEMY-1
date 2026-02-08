@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus AI | Faculty Mastery Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { --primary: #7928ca; --bg: #f8fafc; --white: #ffffff; --text-main: #1e293b; --text-light: #64748b; --border: #e2e8f0; --danger: #ef4444; --success: #10b981; --gold: #f59e0b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; height: 100vh; overflow: hidden; }
+
+        /* Navigation Sidebar */
+        .sidebar { width: 280px; background: var(--white); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 25px; transition: 0.3s; z-index: 10; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
+        .pro-badge { display: none; background: var(--gold); color: white; font-size: 10px; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; }
+        
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-radius: 12px; color: var(--text-main); text-decoration: none; font-weight: 600; margin-bottom: 8px; cursor: pointer; transition: 0.3s; }
+        .nav-item:hover { background: #f1f5f9; }
+        .nav-item.active { background: var(--primary); color: white; box-shadow: 0 10px 15px -3px rgba(121, 40, 202, 0.3); }
+
+        /* Main Container */
+        .main-container { flex: 1; overflow-y: auto; scroll-behavior: smooth; position: relative; }
+        .view-section { display: none; padding: 40px; animation: slideIn 0.5s ease-out; }
+        .view-section.active-view { display: block; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* UI Cards */
+        .card { background: white; padding: 25px; border-radius: 24px; border: 1px solid var(--border); margin-bottom: 25px; position: relative; transition: 0.3s; }
+        .hero { background: linear-gradient(135deg, #1e293b, #334155); border-radius: 30px; padding: 40px; color: white; margin-bottom: 30px; transition: 0.5s; }
+        .pro-active .hero { background: linear-gradient(135deg, #7928ca, #ff0080); }
+
+        /* Lock Mechanics */
+        .lock-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.85); display:flex; justify-content:center; align-items:center; border-radius:24px; z-index:5; backdrop-filter: blur(2px); }
+        .blur-content { filter: blur(4px); pointer-events: none; }
+
+        /* Modals & Inputs */
+        #paymentModal, #quizModal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+        .modal-box { background: white; padding: 40px; border-radius: 28px; width: 450px; text-align: center; }
+        .input-field { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 14px; }
+        .btn-main { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        
+        .plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 20px; }
+        .plan-card { border: 2px solid var(--border); padding: 25px; border-radius: 20px; text-align: center; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 12px; color: var(--text-light); border-bottom: 1px solid var(--border); font-size: 13px; }
+        td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 14px; }
+    </style>
+</head>
+<body id="mainBody">
+
+<nav class="sidebar">
+    <div class="logo"><i class="fa-solid fa-graduation-cap"></i> NEXUS <span class="pro-badge" id="proBadge">PRO</span></div>
+    
+    <div class="nav-item active" onclick="showView('dash', this)"><i class="fa-solid fa-house"></i> Dashboard</div>
+    <div class="nav-item" onclick="showView('roster', this)"><i class="fa-solid fa-users"></i> Student Roster</div>
+    <div class="nav-item" onclick="showView('library', this)"><i class="fa-solid fa-book-open"></i> AI Library</div>
+    <div class="nav-item" id="billingTab" onclick="showView('billing', this)" style="color:var(--gold); border: 1px dashed var(--gold);"><i class="fa-solid fa-crown"></i> Billing & Plans</div>
+    
+    <a href="index.html" class="nav-item" style="margin-top: auto; color: var(--danger);"><i class="fa-solid fa-power-off"></i> Logout</a>
+</nav>
+
+<div class="main-container">
+
+    <section id="view-dash" class="view-section active-view">
+        <div class="hero">
+            <h1 id="dashTitle">Standard Faculty Workspace</h1>
+            <p id="dashSub">You are currently on the Free tier. Upgrade for real-time AI Student Risk detection.</p>
+        </div>
+
+        <div class="card" id="proCard" style="display:none; border-left: 6px solid var(--gold); background: #fffdf5;">
+            <h3 style="color:var(--gold);"><i class="fa-solid fa-robot"></i> AI Risk Management</h3>
+            <p style="margin: 10px 0;"><strong>Amit Kumar</strong> has missed 2 lab sessions. AI predicts a 40% chance of failing the next exam. Nudge him now?</p>
+            <button class="btn-main" style="width:auto; padding:8px 25px; background:var(--gold);" onclick="alert('Support resources sent to Amit!')">Execute Nudge</button>
+        </div>
+
+        <div class="card">
+            <h3>Class Feed</h3>
+            <div id="liveActivity" style="margin-top:15px; color:var(--text-light);">No recent tasks. Visit the Library to create a quiz.</div>
+        </div>
+    </section>
+
+    <section id="view-roster" class="view-section">
+        <h1>Active Students</h1>
+        <div class="card" style="padding:0; overflow:hidden; margin-top:20px;">
+            <table>
+                <thead><tr><th>Student Name</th><th>Engagement</th><th>Action</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Rahul Sharma</strong></td><td>98%</td><td><button style="padding:5px 10px; border-radius:5px; border:1px solid #ddd; background:none; cursor:pointer;">View</button></td></tr>
+                    <tr><td><strong>Amit Kumar</strong></td><td style="color:var(--danger)">45%</td><td><button style="padding:5px 10px; border-radius:5px; border:1px solid #ddd; background:none; cursor:pointer;">Message</button></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="view-library" class="view-section">
+        <h1>Faculty Resources</h1>
+        <div class="plan-grid">
+            <div class="card" style="border: 2px solid var(--success);">
+                <i class="fa-solid fa-file-pen" style="color:var(--success); font-size:1.8rem;"></i>
+                <h4 style="margin-top:15px;">Manual Quiz Builder</h4>
+                <p style="font-size:12px; color:var(--text-light);">Create and save quizzes for free.</p>
+                <button class="btn-main" style="margin-top:15px; background:var(--success);" onclick="openFreeTool()">Launch Free Tool</button>
+            </div>
+
+            <div class="card">
+                <div class="blur-content">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--gold); font-size:1.8rem;"></i>
+                    <h4 style="margin-top:15px;">AI Syllabus Generator</h4>
+                    <p style="font-size:12px;">Generate a full year in 1 click.</p>
+                </div>
+                <div class="lock-overlay">
+                    <div style="text-align:center;">
+                        <i class="fa-solid fa-lock" style="color:var(--gold); font-size:1.5rem;"></i>
+                        <p style="font-size:11px; font-weight:700; margin-top:5px;">PRO ONLY</p>
+                        <button onclick="showView('billing', document.getElementById('billingTab'))" style="cursor:pointer; background:var(--gold); color:white; border:none; padding:5px 12px; border-radius:8px; font-size:10px; margin-top:8px;">Unlock</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="blur-content">
+                    <i class="fa-solid fa-microchip" style="color:var(--primary); font-size:1.8rem;"></i>
+                    <h4 style="margin-top:15px;">Auto-Grade Scanner</h4>
+                    <p style="font-size:12px;">Scan and grade papers using AI.</p>
+                </div>
+                <div class="lock-overlay">
+                    <div style="text-align:center;">
+                        <i class="fa-solid fa-lock" style="color:var(--gold); font-size:1.5rem;"></i>
+                        <p style="font-size:11px; font-weight:700; margin-top:5px;">PRO ONLY</p>
+                        <button onclick="showView('billing', document.getElementById('billingTab'))" style="cursor:pointer; background:var(--gold); color:white; border:none; padding:5px 12px; border-radius:8px; font-size:10px; margin-top:8px;">Unlock</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="view-billing" class="view-section">
+        <h1>Choose Your Plan</h1>
+        <div class="plan-grid" style="margin-top:30px;">
+            <div class="plan-card">
+                <h3>Starter</h3><div style="font-size:2.5rem; font-weight:800; margin:15px 0;">$0</div>
+                <p style="color:var(--text-light);">Basic student tracking & manual tools.</p>
+                <button class="btn-main" style="background:#ddd; color:#666; margin-top:20px;">Current Plan</button>
+            </div>
+            <div class="plan-card" style="border-color:var(--gold); background:#fffdfb; transform: scale(1.05); box-shadow: 0 10px 30px rgba(245, 158, 11, 0.1);">
+                <h3 style="color:var(--gold);">Faculty Pro</h3><div style="font-size:2.5rem; font-weight:800; margin:15px 0;">$19<span style="font-size:1rem; font-weight:400;">/mo</span></div>
+                <p>Full AI Suite, Risk Radar, and Unlimited Marketplace Earnings.</p>
+                <button class="btn-main" onclick="openPayment()" style="margin-top:20px;">Authorize Pro Access</button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div id="quizModal">
+    <div class="modal-box">
+        <h2 style="color:var(--success);">Manual Quiz Builder</h2>
+        <p style="font-size:12px; color:var(--text-light); margin-bottom:15px;">Create your assessment manually below.</p>
+        <input type="text" id="quizTitle" class="input-field" placeholder="Topic: e.g. Basics of Biology">
+        <textarea id="quizBody" class="input-field" style="height:120px;" placeholder="Question 1: ..."></textarea>
+        <button class="btn-main" style="background:var(--success);" onclick="saveFreeQuiz()">Save & Close</button>
+        <p onclick="document.getElementById('quizModal').style.display='none'" style="margin-top:15px; cursor:pointer; font-size:13px; color:var(--text-light);">Cancel</p>
+    </div>
+</div>
+
+<div id="paymentModal">
+    <div class="modal-box">
+        <h2>Unlock Nexus Pro</h2>
+        <p style="font-weight:700; color:var(--primary); margin:10px 0;">Subscription Amount: $19.00</p>
+        <input type="text" class="input-field" placeholder="Card Number: 4242 4242 4242 4242">
+        <div style="display:flex; gap:10px;">
+            <input type="text" class="input-field" placeholder="MM/YY">
+            <input type="text" class="input-field" placeholder="CVC">
+        </div>
+        <button class="btn-main" id="payBtn" onclick="processPayment()">Confirm & Pay</button>
+        <p onclick="document.getElementById('paymentModal').style.display='none'" style="margin-top:15px; cursor:pointer; font-size:13px; color:var(--text-light);">Back</p>
+    </div>
+</div>
+
+<script>
+    // Navigation Logic
+    function showView(viewId, navElement) {
+        document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active-view'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById('view-' + viewId).classList.add('active-view');
+        navElement.classList.add('active');
+    }
+
+    // Modal Control
+    function openFreeTool() { document.getElementById('quizModal').style.display = 'flex'; }
+    function openPayment() { document.getElementById('paymentModal').style.display = 'flex'; }
+
+    // Business Logic
+    function saveFreeQuiz() {
+        const title = document.getElementById('quizTitle').value;
+        if(!title) return alert("Please enter a topic.");
+        document.getElementById('liveActivity').innerHTML = `<div style="padding:15px; background:#f0fdf4; border-left:4px solid var(--success); border-radius:10px;"><strong>New Quiz Ready: ${title}</strong><br><small>Created via Manual Builder</small></div>`;
+        alert("Quiz saved successfully to your Free Library!");
+        document.getElementById('quizModal').style.display = 'none';
+        showView('dash', document.querySelector('.nav-item'));
+    }
+
+    function processPayment() {
+        const btn = document.getElementById('payBtn');
+        btn.innerText = "Processing Transaction...";
+        btn.disabled = true;
+        
+        setTimeout(() => {
+            alert("Payment Successful! Nexus AI Pro is now activated for your account.");
+            document.getElementById('paymentModal').style.display = 'none';
+            activatePro();
+        }, 2000);
+    }
+
+    function activatePro() {
+        document.getElementById('mainBody').classList.add('pro-active');
+        document.getElementById('proBadge').style.display = 'inline-block';
+        document.getElementById('proCard').style.display = 'block';
+        document.getElementById('dashTitle').innerText = "Nexus AI Pro Dashboard";
+        document.getElementById('dashSub').innerText = "AI is currently monitoring your classroom for drop-out risks.";
+        
+        // Remove Locks
+        document.querySelectorAll('.lock-overlay').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.blur-content').forEach(el => el.style.filter = 'none');
+        document.querySelectorAll('.blur-content').forEach(el => el.style.pointerEvents = 'auto');
+        
+        showView('dash', document.querySelector('.nav-item'));
+    }
+</script>
+
+</body>
+</html>

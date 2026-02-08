@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Academy | Mock Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { --primary: #0070f3; --bg: #f8fafc; --white: #ffffff; --text-main: #1e293b; --text-light: #64748b; --border: #e2e8f0; --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; height: 100vh; overflow: hidden; }
+        
+        /* Sidebar matches dashboard */
+        .sidebar { width: 260px; background: var(--white); border-right: 1px solid var(--border); padding: 25px; display: flex; flex-direction: column; }
+        .logo { font-size: 1.4rem; font-weight: 800; color: var(--primary); margin-bottom: 40px; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .nav-label { font-size: 0.75rem; font-weight: 700; color: var(--text-light); text-transform: uppercase; margin: 20px 0 10px 0; display: block; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 10px; color: var(--text-main); text-decoration: none; font-weight: 500; margin-bottom: 5px; transition: 0.2s; }
+        .nav-item:hover { background: #eff6ff; color: var(--primary); }
+        .nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(0, 112, 243, 0.3); }
+
+        /* Content Area */
+        .content { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
+        
+        /* Header styling */
+        .header { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1000px; margin-bottom: 30px; }
+        .search-bar { background: var(--white); border: 1px solid var(--border); padding: 10px 20px; border-radius: 50px; width: 400px; display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow); }
+        .search-bar input { border: none; outline: none; width: 100%; font-size: 0.9rem; }
+
+        /* Quiz Card Styling */
+        .quiz-card { background: white; padding: 40px; border-radius: 24px; border: 1px solid var(--border); width: 100%; max-width: 700px; box-shadow: var(--shadow); }
+        .q-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 25px; color: var(--text-main); }
+        .option-label { display: block; position: relative; padding: 15px 20px 15px 50px; border: 2px solid var(--border); border-radius: 12px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; font-weight: 500; }
+        .option-label:hover { border-color: var(--primary); background: #f0f7ff; }
+        .option-label input { position: absolute; opacity: 0; }
+        .checkmark { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); height: 18px; width: 18px; background-color: #eee; border-radius: 50%; border: 2px solid #ddd; }
+        .option-label input:checked ~ .checkmark { background-color: var(--primary); border-color: var(--primary); }
+        .active-opt { border-color: var(--primary) !important; background: #eff6ff !important; }
+
+        .btn-submit { background: var(--primary); color: white; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        
+        /* Right Panel */
+        .right-panel { width: 320px; background: var(--white); border-left: 1px solid var(--border); padding: 25px; }
+        .doubt-box { background: #fff5f5; border: 1px solid #fee2e2; padding: 20px; border-radius: 20px; text-align: center; }
+        .btn-doubt { background: #ef4444; color: white; border: none; width: 100%; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 15px; }
+
+        #resultArea { display: none; text-align: center; }
+    </style>
+</head>
+<body>
+
+<nav class="sidebar">
+    <a href="dashboard.html" class="logo"><i class="fa-solid fa-graduation-cap"></i> NEXUS ACADEMY</a>
+    
+    <span class="nav-label">Learn</span>
+    <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i> Dashboard</a>
+    <a href="MyCourses.html" class="nav-item"><i class="fa-solid fa-play"></i> My Courses</a>
+    <a href="StudyMaterial.html" class="nav-item"><i class="fa-solid fa-book-open"></i> Study Material</a>
+    <a href="Assignments.html" class="nav-item"><i class="fa-solid fa-list-check"></i> Assignments</a>
+    <a href="reminder.html" class="nav-item"><i class="fa-solid fa-stopwatch"></i> Study Timer</a>
+    <span class="nav-label">Practice</span>
+    <a href="MockTests.html" class="nav-item active"><i class="fa-solid fa-vial"></i> Mock Tests</a>
+    <a href="PastPapers.html" class="nav-item"><i class="fa-solid fa-file-pen"></i> Past Papers</a>
+    <a href="planner.html" class="nav-item"><i class="fa-solid fa-calendar"></i> Planner</a>
+    <a href="profile.html" class="nav-item"><i class="fa-solid fa-user-circle"></i> Profile</a>
+</nav>
+
+<main class="content">
+    <div class="header">
+        <div class="search-bar"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search for questions..."></div>
+        <div style="font-weight: 700; color: var(--text-main);">Hi, Student! <i class="fa-regular fa-bell" style="margin-left:10px;"></i></div>
+    </div>
+
+    <div class="quiz-card" id="quizContainer">
+        <div id="quizArea">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px; color: var(--primary); font-weight: 700;">
+                <span id="qCount">Question 1 of 20</span>
+                <span><i class="fa-regular fa-clock"></i> <span id="time">15:00</span></span>
+            </div>
+            <h3 class="q-title" id="questionText">Loading question...</h3>
+            <div id="optionsContainer"></div>
+            <button class="btn-submit" onclick="nextQuestion()">Submit Answer</button>
+        </div>
+
+        <div id="resultArea">
+            <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: #22c55e;"></i>
+            <h2 style="margin-top: 20px;">Test Completed!</h2>
+            <div id="finalScore" style="font-size: 2.5rem; font-weight: 800; color: var(--primary); margin: 20px 0;">0/20</div>
+            <button class="btn-submit" onclick="location.reload()">Restart Test</button>
+        </div>
+    </div>
+</main>
+
+<aside class="right-panel">
+    <div class="doubt-box">
+        <h4 style="color: #ef4444;">Have a Doubt?</h4>
+        <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 5px;">Snap a photo and get instant help.</p>
+        <button class="btn-doubt">Ask Now</button>
+    </div>
+</aside>
+
+<script>
+    const questions = [
+        { q: "In Python, which keyword is used to create a function?", opts: ["func", "define", "def", "function"], c: 2 },
+        { q: "What is the correct file extension for Python files?", opts: [".pt", ".py", ".pyt", ".pyw"], c: 1 },
+        { q: "How do you start a WHILE loop in Python?", opts: ["while x > y:", "while x > y {", "while (x > y)", "while x > y then"], c: 0 },
+        { q: "Which data type is used to store multiple items in a single variable?", opts: ["String", "Integer", "List", "Float"], c: 2 },
+        { q: "What is the output of 2**3 in Python?", opts: ["6", "8", "9", "5"], c: 1 },
+        { q: "Which of these is the correct main method signature in Java?", opts: ["public static void main()", "public void main(String args[])", "public static void main(String[] args)", "static main(String[] args)"], c: 2 },
+        { q: "Which keyword is used to inherit a class in Java?", opts: ["implements", "extends", "inherits", "import"], c: 1 },
+        { q: "What is the default value of an int variable in Java?", opts: ["0", "null", "undefined", "1"], c: 0 },
+        { q: "Which company developed Java?", opts: ["Microsoft", "Google", "Sun Microsystems", "Apple"], c: 2 },
+        { q: "Which of these is used to read input in Java?", opts: ["System.in", "Scanner", "Input", "Reader"], c: 1 },
+        { q: "What is the square root of 144?", opts: ["10", "11", "12", "14"], c: 2 },
+        { q: "What is the value of Pi (approx)?", opts: ["3.12", "3.14", "3.16", "3.18"], c: 1 },
+        { q: "Solve: 25% of 200", opts: ["25", "50", "75", "100"], c: 1 },
+        { q: "What is the derivative of x²?", opts: ["x", "2", "2x", "x³"], c: 2 },
+        { q: "If 2x + 5 = 15, what is x?", opts: ["5", "10", "2.5", "7.5"], c: 0 },
+        { q: "Which of the following is an IDE?", opts: ["Chrome", "VS Code", "Windows", "Google"], c: 1 },
+        { q: "1 Byte is equal to how many bits?", opts: ["4 bits", "8 bits", "16 bits", "32 bits"], c: 1 },
+        { q: "What does HTML stand for?", opts: ["Hyper Text Markup Language", "High Tech Modern Language", "Hyperlink Tool Multi Language", "None"], c: 0 },
+        { q: "Who is known as the father of Computers?", opts: ["Bill Gates", "Elon Musk", "Charles Babbage", "Mark Zuckerberg"], c: 2 },
+        { q: "Which language is used for Android apps?", opts: ["Swift", "Kotlin/Java", "C#", "Ruby"], c: 1 }
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+
+    function loadQuestion() {
+        const item = questions[currentIdx];
+        document.getElementById('qCount').innerText = `Question ${currentIdx + 1} of ${questions.length}`;
+        document.getElementById('questionText').innerText = item.q;
+        const container = document.getElementById('optionsContainer');
+        container.innerHTML = "";
+        
+        item.opts.forEach((opt, i) => {
+            const label = document.createElement('label');
+            label.className = "option-label";
+            label.innerHTML = `<input type="radio" name="quizOpt" value="${i}"><span class="checkmark"></span>${opt}`;
+            label.onclick = function() {
+                document.querySelectorAll('.option-label').forEach(el => el.classList.remove('active-opt'));
+                label.classList.add('active-opt');
+            };
+            container.appendChild(label);
+        });
+    }
+
+    function nextQuestion() {
+        const selected = document.querySelector('input[name="quizOpt"]:checked');
+        if (!selected) { alert("Please select an answer!"); return; }
+        if (parseInt(selected.value) === questions[currentIdx].c) { score++; }
+        currentIdx++;
+        if (currentIdx < questions.length) { loadQuestion(); } else { showResults(); }
+    }
+
+    function showResults() {
+        document.getElementById('quizArea').style.display = 'none';
+        document.getElementById('resultArea').style.display = 'block';
+        document.getElementById('finalScore').innerText = `${score}/${questions.length}`;
+    }
+
+    let timeLeft = 900;
+    setInterval(() => {
+        if (timeLeft <= 0) showResults();
+        timeLeft--;
+        let m = Math.floor(timeLeft / 60);
+        let s = timeLeft % 60;
+        document.getElementById('time').innerText = `${m}:${s < 10 ? '0' + s : s}`;
+    }, 1000);
+
+    loadQuestion();
+</script>
+</body>
+</html>

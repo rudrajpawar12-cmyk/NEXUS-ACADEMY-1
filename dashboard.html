@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Academy | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { 
+            --primary: #0070f3; 
+            --bg: #f8fafc; 
+            --white: #ffffff; 
+            --text-main: #1e293b; 
+            --text-light: #64748b; 
+            --border: #e2e8f0; 
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); 
+            --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg); 
+            display: flex; 
+            height: 100vh; 
+            overflow: hidden; 
+        }
+
+        /* Sidebar Logic */
+        .sidebar { 
+            width: 260px; 
+            background: var(--white); 
+            border-right: 1px solid var(--border); 
+            display: flex; 
+            flex-direction: column; 
+            padding: 25px; 
+        }
+
+        .logo { 
+            font-size: 1.4rem; 
+            font-weight: 800; 
+            color: var(--primary); 
+            margin-bottom: 40px; 
+            text-decoration: none; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+
+        /* Scrollable Nav Area */
+        .nav-container {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .nav-section { margin-bottom: 30px; }
+        
+        .nav-label { 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            color: var(--text-light); 
+            text-transform: uppercase; 
+            margin-bottom: 15px; 
+            display: block; 
+        }
+
+        .nav-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            padding: 12px 15px; 
+            border-radius: 10px; 
+            color: var(--text-main); 
+            text-decoration: none; 
+            font-weight: 500; 
+            margin-bottom: 5px; 
+            transition: 0.2s; 
+        }
+
+        .nav-item:hover { background: #eff6ff; color: var(--primary); }
+        .nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(0, 112, 243, 0.3); }
+
+        /* Logout Button Styling */
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .logout-btn {
+            color: var(--danger);
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        /* Main Content */
+        .content { flex: 1; overflow-y: auto; padding: 40px; }
+        .hero-card { background: linear-gradient(135deg, #0070f3 0%, #00a3ff 100%); border-radius: 24px; padding: 40px; color: white; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0, 112, 243, 0.2); }
+        .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
+        .stat-card { background: white; padding: 25px; border-radius: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .item-card { background: white; padding: 15px; border-radius: 15px; border: 1px solid var(--border); display: flex; align-items: center; gap: 15px; margin-top: 15px; transition: 0.2s; }
+        .progress-bar { height: 8px; background: #f1f5f9; border-radius: 10px; flex: 1; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--primary); }
+        .right-panel { width: 320px; background: var(--white); border-left: 1px solid var(--border); padding: 25px; }
+        .doubt-box { background: #fff5f5; border: 1px solid #fee2e2; padding: 20px; border-radius: 20px; text-align: center; }
+        .btn-ask { background: #ef4444; color: white; border: none; width: 100%; padding: 12px; border-radius: 12px; margin-top: 15px; cursor: pointer; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<nav class="sidebar">
+    <a href="dashboard.html" class="logo"><i class="fa-solid fa-graduation-cap"></i> NEXUS ACADEMY</a>
+    
+    <div class="nav-container" id="main-nav">
+        <div class="nav-section">
+            <span class="nav-label">Learn</span>
+            <a href="dashboard.html" class="nav-item active"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a href="MyCourses.html" class="nav-item" id="courses-link"><i class="fa-solid fa-play"></i> My Courses</a>
+            <a href="StudyMaterial.html" class="nav-item"><i class="fa-solid fa-book-open"></i> Study Material</a>
+            <a href="Assignments.html" class="nav-item"><i class="fa-solid fa-list-check"></i> Assignments</a>
+        </div>
+        
+        <div class="nav-section">
+            <span class="nav-label">Tools</span>
+            <a href="reminder.html" class="nav-item" id="timer-link"><i class="fa-solid fa-stopwatch"></i> Study Timer</a>
+            <a href="planner.html" class="nav-item" id="planner-link"><i class="fa-solid fa-calendar"></i> Planner</a>
+        </div>
+
+        <div class="nav-section">
+            <span class="nav-label">Practice</span>
+            <a href="MockTests.html" class="nav-item"><i class="fa-solid fa-vial"></i> Mock Tests</a>
+            <a href="profile.html" class="nav-item"><i class="fa-solid fa-user-circle"></i> Profile</a>
+        </div>
+    </div>
+
+    <div class="sidebar-footer">
+        <a href="#" class="nav-item logout-btn" id="logoutBtn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    </div>
+</nav>
+
+<main class="content">
+    <div class="hero-card">
+        <h1>Welcome back, <span id="userNameDisplay">Alex</span>!</h1>
+        <p>Your learning journey is 75% complete this week.</p>
+        <button onclick="location.href='MyCourses.html'" style="margin-top:20px; padding: 12px 25px; border-radius: 12px; border:none; cursor:pointer; font-weight:700; color:var(--primary); background: white;">Resume Video</button>
+    </div>
+
+    <div class="dashboard-grid">
+        <div style="display: flex; flex-direction: column; gap: 25px;">
+            <div class="stat-card">
+                <h3 style="font-size: 1.1rem;">Recent Progress</h3>
+                <div class="item-card">
+                    <i class="fa-brands fa-python" style="font-size: 1.5rem; color: #3776ab;"></i>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 65%;"></div></div>
+                    <span style="font-weight: 700; color: var(--text-main);">65%</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="font-size: 1.1rem;">Upcoming Assignments</h3>
+                    <a href="Assignments.html" style="font-size: 0.85rem; color: var(--primary); text-decoration: none; font-weight: 600;">View All</a>
+                </div>
+                <div class="item-card">
+                    <i class="fa-solid fa-code" style="color: #6366f1;"></i>
+                    <div style="flex: 1;">
+                        <p style="font-size: 0.9rem; font-weight: 600;">Python Data Structures</p>
+                        <p style="font-size: 0.75rem; color: var(--text-light);">Due in 2 days</p>
+                    </div>
+                    <span style="font-size: 0.75rem; background: #fff7ed; color: #c2410c; padding: 4px 10px; border-radius: 50px; font-weight: 700;">Pending</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center; height: fit-content;">
+            <h2 style="font-size: 3rem; margin-bottom: 5px;">12 🔥</h2>
+            <p style="font-weight: 600; color: var(--text-light);">Day Streak</p>
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border);">
+            <p style="font-size: 0.85rem; color: var(--text-main);">Keep going! You're in the top 5% of learners this week.</p>
+        </div>
+    </div>
+</main>
+
+<aside class="right-panel">
+    <div class="doubt-box">
+        <h4 style="color: #991b1b;">Have a Doubt?</h4>
+        <p style="font-size: 0.8rem; color: #b91c1c; margin-top: 5px;">Snap a photo and get solutions.</p>
+        <button class="btn-ask">Ask Now</button>
+    </div>
+</aside>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Update Name
+        const savedName = localStorage.getItem('nexusUser');
+        const display = document.getElementById('userNameDisplay');
+        if (savedName) display.textContent = savedName;
+
+        // Role Management
+        const role = localStorage.getItem('userRole') || 'student';
+        const navContainer = document.getElementById('main-nav');
+
+        if (role === 'teacher') {
+            navContainer.innerHTML = `
+                <div class="nav-section">
+                    <span class="nav-label">Management</span>
+                    <a href="TeacherDashboard.html" class="nav-item active"><i class="fa-solid fa-chalkboard-user"></i> Class Overview</a>
+                    <a href="MyStudents.html" class="nav-item"><i class="fa-solid fa-users"></i> Student Progress</a>
+                </div>
+                <div class="nav-section">
+                    <span class="nav-label">Resources</span>
+                    <a href="UploadMaterial.html" class="nav-item"><i class="fa-solid fa-file-export"></i> Share Materials</a>
+                    <a href="AssignmentCreator.html" class="nav-item"><i class="fa-solid fa-pen-to-square"></i> Create Quiz</a>
+                </div>
+            `;
+        } else if (role === 'business') {
+            document.getElementById('timer-link').innerHTML = '<i class="fa-solid fa-briefcase"></i> Work Timer';
+            document.getElementById('planner-link').innerHTML = '<i class="fa-solid fa-list-check"></i> Project Board';
+        }
+
+        // Logout Logic
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            if(confirm("Are you sure you want to log out?")) {
+                localStorage.clear(); // Clears name and role
+                window.location.href = 'login.html'; // Redirects to login
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
